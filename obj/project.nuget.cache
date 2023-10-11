@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "vV8Fv/vlzgDTRO2w1S8y1PFle+FI/fFukqj/OwN3tw8XeBONFAfh2baovByrMZoBMOOz1QZeJhK0lWdHYPXoDQ==",
+  "dgSpecHash": "7G2MKT4S9wJ9pMJTTmnb3ruj7NtmzgZFpVXRmdbbn38hu70tNRtj5x1E/QO/OmRJE3mYdKhRxKjQOsKYvicynw==",
   "success": true,
   "projectFilePath": "C:\\Users\\morte\\MyWPFApp\\MyWPFApp.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\morte\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
