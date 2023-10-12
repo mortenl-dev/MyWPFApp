@@ -29,46 +29,7 @@ namespace MyWPFApp
             DataContext = this;
             Entry();
         }
-        private string? _NewsTitle = "N/A";
-        public string NewsTitle
-        { 
-            get { return _NewsTitle!; }
-            set {
-                _NewsTitle = value;
-            }
-        }
-        private string? _Description = "N/A";
-        public string Description
-        { 
-            get { return _Description!; }
-            set {
-                _Description = value;
-            }
-        }
-        private string? _ImageSource = "N/A";
-        public string ImageSource
-        { 
-            get { return _ImageSource!; }
-            set {
-                _ImageSource = value;
-            }
-        }
-        private string? _ImageHeight = "N/A";
-        public string ImageHeight
-        { 
-            get { return _ImageHeight!; }
-            set {
-                _ImageHeight = value;
-            }
-        }
-        private string? _ImageWidth = "N/A";
-        public string ImageWidth
-        { 
-            get { return _ImageWidth!; }
-            set {
-                _ImageHeight = value;
-            }
-        }
+        
         
         public void Entry()
         {
@@ -76,6 +37,7 @@ namespace MyWPFApp
             //fetch.GetAPI("https://api.coindesk.com/v1/bpi/currentprice.json");
             string APIKEY = "Hul4AwZ6iwHtCaUvAKgm1goi8CuGrYTz";
             string period = "1";
+
             GetAPI($"https://api.nytimes.com/svc/mostpopular/v2/viewed/{period}.json?api-key={APIKEY}");
         }
         public void GetAPI(string URL) {
@@ -90,35 +52,60 @@ namespace MyWPFApp
                     msg.Wait();
 
                     Root root = Newtonsoft.Json.JsonConvert.DeserializeObject<Root>(msg.Result)!;
-                    _NewsTitle = root.results![0].title!;
-                    _Description = root.results![0].@abstract!;
-                    if (root.results[0].media!.Count > 0) {
-                        if (root.results[0].media![0].mediametadata!.Count > 0) {
-                            _ImageSource = root.results[0].media![0].mediametadata![0].url!;
-                            _ImageHeight = root.results[0].media![0].mediametadata![0].height.ToString();
-                            _ImageWidth = root.results[0].media![0].mediametadata![0].width.ToString();
-                        }
-                    }
                     
-                    
-
-
-                    foreach (var res in root.results!)
+                    TextBoxContainer.Children.Clear(); // Clear existing TextBoxes if any.
+                        Console.WriteLine("huh");
+                        for (int i = 0; i < root.num_results; i++)
                         {
-                            
+                            TextBox textBox = new TextBox();
+                            textBox.Text = root.results![i].title;
+                            textBox.IsReadOnly = true;
+                            textBox.HorizontalAlignment= new HorizontalAlignment();
+                            textBox.BorderThickness= new Thickness(0);
+                            textBox.TextWrapping= new TextWrapping();
+                            textBox.VerticalAlignment= new VerticalAlignment();
+                            textBox.Width = 600;
+                            textBox.Margin = new Thickness(10,50,0,0);
+                            TextBox textBox2 = new TextBox();
+                            textBox2.Text = root.results![i].@abstract;
+                            textBox2.IsReadOnly = true;
+                            textBox2.HorizontalAlignment= new HorizontalAlignment();
+                            textBox2.BorderThickness= new Thickness(0);
+                            textBox2.TextWrapping= new TextWrapping();
+                            textBox2.VerticalAlignment= new VerticalAlignment();
+                            textBox2.Width = 600;
+                            textBox2.Margin = new Thickness(10,5,0,0);
+                            TextBoxContainer.Children.Add(textBox);
+                            TextBoxContainer.Children.Add(textBox2);
+                            Image img = new Image();
+                            if (root.results[i].media!.Count > 0) {
+                            if (root.results[i].media![0].mediametadata!.Count > 0) {
+                                BitmapImage bitmapImage = new BitmapImage(new Uri(root.results[i].media![0].mediametadata![0].url!));
+                                img.Source = bitmapImage;
+                                img.Height = (double) root.results[i].media![0].mediametadata![0].height!;
+                                img.Width = (double) root.results[i].media![0].mediametadata![0].width!;
+                                img.Margin = new Thickness(5,10,0,0);
+                                img.HorizontalAlignment = new HorizontalAlignment();
+                                img.VerticalAlignment = new VerticalAlignment();
+                            }
+                            }
+                            TextBoxContainer.Children.Add(img);
 
                         }
-                        
-
+                    
+                    
                 }
-            }
+                }
             }
             catch (FormatException) {
 
             }
         }
+        
+        
     }
-    public class MediaMetadatum
+    
+public class MediaMetadatum
 {
     public string? url { get; set; }
     public string? format { get; set; }

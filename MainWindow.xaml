@@ -11,18 +11,36 @@
         <Window.Resources>
         <System:String x:Key="test">hrrs</System:String>
          </Window.Resources>
-    <Grid>
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    <StackPanel Name="TextBoxContainer" Orientation="Vertical" />
+    </ScrollViewer>
+    
+        <!--<ItemsControl ItemsSource="{Binding Enumerable.Range(0, nums_result)}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBox IsReadOnly="True" Height="40" Width="400" Margin="10,10,0,0" 
+                            Text="{Binding Path=NewsTitle[.]}" TextWrapping="Wrap" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <TextBox IsReadOnly="True" Name="TextBox1" Height="600" Width="600"   
-            Text="{Binding Path=NewsTitle, Mode=OneWay}" 
+            Text="{Binding Path=NewsTitle[0], Mode=OneWay}" 
             Margin="10,10,0,0" VerticalAlignment="Top"  
             HorizontalAlignment="Left" BorderThickness="0" TextWrapping="Wrap">  
         </TextBox>
         <TextBox IsReadOnly="True" Name="TextBox2" Height="600" Width="600"   
-            Text="{Binding Path=Description, Mode=OneWay}" 
-            Margin="50,50,0,0" VerticalAlignment="Top"  
+            Text="{Binding Path=NewsTitle[1], Mode=OneWay}" 
+            Margin="20,20,0,0" VerticalAlignment="Top"  
             HorizontalAlignment="Left" BorderThickness="0" TextWrapping="Wrap">  
         </TextBox>
-        <Image Source="{Binding Path=ImageSource}" Height="{Binding Path=ImageHeight}" Width="{Binding Path=ImageWidth}" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"  />
-    </Grid>
+        <TextBox IsReadOnly="True" Name="TextBox2" Height="600" Width="600"   
+            Text="{Binding Path=Description[num], Mode=OneWay}" 
+            Margin="100,50,0,0" VerticalAlignment="Top"  
+            HorizontalAlignment="Left" BorderThickness="0" TextWrapping="Wrap">  
+        </TextBox>
+        <Image Source="{Binding Path=ImageSource[num]}" Height="{Binding Path=ImageHeight[num]}" Width="{Binding Path=ImageWidth[num]}" Margin="5,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  />
+        -->
+    
     
 </Window>
