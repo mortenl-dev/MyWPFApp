@@ -10,10 +10,14 @@
         Title="RecentNews" Height="450" Width="800">
         <Window.Resources>
         <System:String x:Key="test">hrrs</System:String>
+        <FontFamily x:Key="font" >/MyWPFApp/#SitkaVF</FontFamily>
          </Window.Resources>
     
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-    <StackPanel Name="TextBoxContainer" Orientation="Vertical" />
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
+    <ScrollViewer.Background>
+    <SolidColorBrush Color="#181818" /></ScrollViewer.Background>
+    
+    <StackPanel Name="TextBoxContainer" Orientation="Horizontal" />
     </ScrollViewer>
     
         <!--<ItemsControl ItemsSource="{Binding Enumerable.Range(0, nums_result)}">

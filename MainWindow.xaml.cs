@@ -14,12 +14,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Security.Authentication;
 
 namespace MyWPFApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class RecentNews : Window
     {   
         
@@ -36,9 +35,10 @@ namespace MyWPFApp
     
             //fetch.GetAPI("https://api.coindesk.com/v1/bpi/currentprice.json");
             string APIKEY = "Hul4AwZ6iwHtCaUvAKgm1goi8CuGrYTz";
-            string period = "1";
+            string period = "30";
 
             GetAPI($"https://api.nytimes.com/svc/mostpopular/v2/viewed/{period}.json?api-key={APIKEY}");
+            GetAPI($"https://api.nytimes.com/svc/mostpopular/v2/shared/{period}.json?api-key={APIKEY}");
         }
         public void GetAPI(string URL) {
             HttpClient client = new HttpClient();
@@ -51,23 +51,34 @@ namespace MyWPFApp
                     var msg = result.Content.ReadAsStringAsync();
                     msg.Wait();
 
-                    Root root = Newtonsoft.Json.JsonConvert.DeserializeObject<Root>(msg.Result)!;
+                    Root root = JsonConvert.DeserializeObject<Root>(msg.Result)!;
                     
-                    TextBoxContainer.Children.Clear(); // Clear existing TextBoxes if any.
                         Console.WriteLine("huh");
+                        StackPanel row = new StackPanel();
+                        var bc = new BrushConverter();
+                        Brush br = (Brush)bc.ConvertFrom("#181818")!;
                         for (int i = 0; i < root.num_results; i++)
-                        {
+                        {   
+                            StackPanel panel = new StackPanel();
+                            panel.Orientation = Orientation.Horizontal;
                             TextBox textBox = new TextBox();
+                            textBox.Background = br;
+                            textBox.Foreground = Brushes.Gainsboro;
+                            textBox.FontSize = 20;
                             textBox.Text = root.results![i].title;
                             textBox.IsReadOnly = true;
                             textBox.HorizontalAlignment= new HorizontalAlignment();
                             textBox.BorderThickness= new Thickness(0);
                             textBox.TextWrapping= new TextWrapping();
+                            textBox.FontFamily = new FontFamily("Trebuchet MS");
                             textBox.VerticalAlignment= new VerticalAlignment();
                             textBox.Width = 600;
-                            textBox.Margin = new Thickness(10,50,0,0);
+                            textBox.Margin = new Thickness(10,20,0,0);
                             TextBox textBox2 = new TextBox();
-                            textBox2.Text = root.results![i].@abstract;
+                            textBox2.FontSize = 18;
+                            textBox2.Background = br;
+                            textBox2.Foreground = Brushes.Gainsboro;
+                            textBox2.Text = root.results![i].@abstract + Environment.NewLine + Environment.NewLine +root.results![i].url;
                             textBox2.IsReadOnly = true;
                             textBox2.HorizontalAlignment= new HorizontalAlignment();
                             textBox2.BorderThickness= new Thickness(0);
@@ -75,8 +86,9 @@ namespace MyWPFApp
                             textBox2.VerticalAlignment= new VerticalAlignment();
                             textBox2.Width = 600;
                             textBox2.Margin = new Thickness(10,5,0,0);
-                            TextBoxContainer.Children.Add(textBox);
-                            TextBoxContainer.Children.Add(textBox2);
+                            textBox2.FontFamily = new FontFamily("Trebuchet MS");
+                            row.Children.Add(textBox);
+                            panel.Children.Add(textBox2);
                             Image img = new Image();
                             if (root.results[i].media!.Count > 0) {
                             if (root.results[i].media![0].mediametadata!.Count > 0) {
@@ -84,21 +96,22 @@ namespace MyWPFApp
                                 img.Source = bitmapImage;
                                 img.Height = (double) root.results[i].media![0].mediametadata![0].height!;
                                 img.Width = (double) root.results[i].media![0].mediametadata![0].width!;
-                                img.Margin = new Thickness(5,10,0,0);
+                                img.Margin = new Thickness(5,0,0,0);
                                 img.HorizontalAlignment = new HorizontalAlignment();
                                 img.VerticalAlignment = new VerticalAlignment();
                             }
                             }
-                            TextBoxContainer.Children.Add(img);
+                            panel.Children.Add(img);
+                            row.Children.Add(panel);
 
                         }
-                    
+                        TextBoxContainer.Children.Add(row);
                     
                 }
                 }
             }
             catch (FormatException) {
-
+                Console.WriteLine("Error");
             }
         }
         
